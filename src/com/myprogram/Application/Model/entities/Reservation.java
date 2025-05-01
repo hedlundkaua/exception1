@@ -1,11 +1,17 @@
 package com.myprogram.Application.Model.entities;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Reservation {
         private int roomNumber;
         private Date checkin;
         private Date checkout;
+
+        private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
 
     public Reservation() {
     }
@@ -28,27 +34,32 @@ public class Reservation {
         return checkin;
     }
 
-    public void setCheckin(Date checkin) {
-        this.checkin = checkin;
-    }
-
     public Date getCheckout() {
         return checkout;
     }
 
-    public void setCheckout(Date checkout) {
-        this.checkout = checkout;
+
+    public long duration(){
+        long diff = checkout.getTime() - checkin.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    public int duration(){
+    public void updateDates(Date checkIn, Date checkOut){
+        this.checkin = checkIn;
+        this.checkout = checkOut;
     }
 
-    public void updateDates(Date checkin, Date checkout){
-
+    @Override
+    public String toString() {
+        return "Room "
+              + roomNumber
+              + ", check-in: "
+              + sdf.format(checkin)
+              + ", check-out: "
+              + sdf.format(checkout)
+              + ", "
+              + duration()
+              + " nights";
     }
-
-
-
-
 }
 
